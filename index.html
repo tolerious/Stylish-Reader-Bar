@@ -7,6 +7,7 @@
   </head>
   <body style="margin: 0; padding: 0">
     <div
+      id="stylish-reader-bar"
       style="
         height: 30px;
         background-color: #f8f9fa;
@@ -17,6 +18,9 @@
         top: 0;
         padding: 0 10px;
         box-sizing: border-box;
+        display: grid;
+        grid-template-columns: 250px minmax(0, 1fr) 50px;
+        grid-template-rows: 1fr;
       "
     >
       <div
@@ -27,7 +31,6 @@
           justify-content: flex-start;
           align-items: center;
           height: 100%;
-          width: 250px;
         "
       >
         <img style="height: 25px" src="./stylish-reader-48.png" alt="" />
@@ -37,6 +40,70 @@
         >
         <img style="height: 10px" src="./right-arrow.png" alt="" />
       </div>
+      <div style="line-height: 30px">
+        <div id="stylish-reader-bar-message"></div>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-end;
+          cursor: pointer;
+        "
+      >
+        <img
+          id="stylish-reader-bar-cancel-button"
+          style="height: 20px"
+          src="./cancel-button.png"
+          alt=""
+        />
+      </div>
     </div>
   </body>
+  <script>
+    var cancelButton = document.getElementById(
+      "stylish-reader-bar-cancel-button"
+    );
+    cancelButton.addEventListener("click", function () {
+      var stylishReaderBar = document.getElementById("stylish-reader-bar");
+      var parentElement = stylishReaderBar.parentNode;
+      parentElement.removeChild(stylishReaderBar);
+    });
+    // 获取要显示倒计时的元素
+    var countdownElement = document.getElementById(
+      "stylish-reader-bar-message"
+    );
+
+    // 设置倒计时的总时间（以秒为单位）
+    var totalTimeInSeconds = 5;
+
+    // 开始倒计时
+    function startCountdown() {
+      var currentTime = totalTimeInSeconds;
+
+      // 更新倒计时显示
+      function updateCountdown() {
+        countdownElement.textContent =
+          "Article added, this message will disappear in " +
+          currentTime +
+          " seconds.";
+
+        if (currentTime <= 0) {
+          clearInterval(intervalId);
+          countdownElement.textContent = "倒计时结束!";
+          countdownElement.style.display = "none";
+        } else {
+          currentTime--;
+        }
+      }
+
+      // 每秒更新一次倒计时
+      updateCountdown(); // 立即显示初始倒计时
+      var intervalId = setInterval(updateCountdown, 1000);
+    }
+
+    // 在页面加载完毕后开始倒计时
+    document.addEventListener("DOMContentLoaded", startCountdown);
+  </script>
 </html>
